@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+//const pg = require('pg'); Put this in database.js?
 
 const app = express();
 
@@ -15,7 +16,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/login', function (req, res) {
-    res.send('login page?'); //testing fuctionality
+    //res.send('login page?'); //need to redirect to ./views/layouts/login.html
+    res.render('login', {layout: false}); //layouts false excludes from global css
 });
+
+//const articles = require('./controllers/articles');
+//app.use('/articles', articles);
 
 app.listen(3000);
