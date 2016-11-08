@@ -26,11 +26,15 @@ var Article = connection.define('article', {
 	body: Sequelize.TEXT
 });
 
-connection.sync().then(function(){
+connection.sync({ //This is how we are going to add things
+	force: true
+}).then(function(){
 	Article.create({
-		title: 'demo title',
-		body: 'This is some stuff! LOOK, THINGS! rfnwefne93!!!!!!!'
-	});
-});
+		title: 'Some title',
+		body: 'Some body'
+	}).then(function(insertedArticle){
+		console.log(insertedArticle.dataValues);
+	})
+})
 
 app.listen(3000);
