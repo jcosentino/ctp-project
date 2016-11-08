@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const Sequelize = require('sequelize');
 //const pg = require('pg'); Put this in database.js?
 
 const app = express();
@@ -7,20 +8,29 @@ const app = express();
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-//app.set('views', `${__dirname}/views/`); //?
-//app.use(viewHelpers.register()); //?
-//app.use(require('./controllers/')); //?
-
 app.get('/', function (req, res) {
     res.render('home');
 });
 
 app.get('/login', function (req, res) {
-    //res.send('login page?'); //need to redirect to ./views/layouts/login.html
     res.render('login', {layout: false}); //layouts false excludes from global css
 });
 
-//const articles = require('./controllers/articles');
-//app.use('/articles', articles);
+var connection = new Sequelize('ctp-project-db', 'postgres', 'ctp2016', {
+	host: '127.0.0.1',
+	dialect: 'postgres'
+
+});
+var Article = connection.define('article', {
+	title: Sequelize.STRING,
+	body: Sequelize.TEXT
+});
+
+connection.sync().then(function(){
+	Article.create({
+		title: 'demo title',
+		body: 'This is some stuff! LOOK, THINGS! rfnwefne93!!!!!!!'
+	});
+});
 
 app.listen(3000);
